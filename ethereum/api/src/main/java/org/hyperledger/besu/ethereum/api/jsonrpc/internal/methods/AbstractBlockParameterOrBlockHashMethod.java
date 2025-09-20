@@ -130,8 +130,8 @@ public abstract class AbstractBlockParameterOrBlockHashMethod implements JsonRpc
       Optional<BlockHeader> maybeBlockHeader =
           getBlockchainQueries().getBlockHeaderByHash(blockHash.get());
       if (maybeBlockHeader.isEmpty()) {
-        return new JsonRpcErrorResponse(
-            requestContext.getRequest().getId(), RpcErrorType.BLOCK_NOT_FOUND);
+          // block not found, to comply with an API spec null result returned
+          return null;
       }
 
       if (Boolean.TRUE.equals(blockParameterOrBlockHash.getRequireCanonical())
