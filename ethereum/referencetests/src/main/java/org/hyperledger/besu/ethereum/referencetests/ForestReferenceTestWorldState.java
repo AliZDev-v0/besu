@@ -21,7 +21,6 @@ import org.hyperledger.besu.ethereum.trie.forest.worldview.ForestMutableWorldSta
 import org.hyperledger.besu.evm.internal.EvmConfiguration;
 import org.hyperledger.besu.evm.worldstate.WorldState;
 import org.hyperledger.besu.evm.worldstate.WorldUpdater;
-import org.hyperledger.besu.plugin.data.BlockHeader;
 import org.hyperledger.besu.services.kvstore.InMemoryKeyValueStorage;
 
 import java.util.Collection;
@@ -59,7 +58,7 @@ public class ForestReferenceTestWorldState extends ForestMutableWorldState
    */
   @Override
   public Collection<Exception> processExtraStateStorageFormatValidation(
-      final BlockHeader blockHeader) {
+      final org.hyperledger.besu.plugin.data.BlockHeader blockHeader) {
     // nothing more to verify with forest
     return Collections.emptyList();
   }

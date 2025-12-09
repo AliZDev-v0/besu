@@ -16,12 +16,13 @@ package org.hyperledger.besu.plugin.services.storage;
 
 import org.hyperledger.besu.datatypes.Hash;
 import org.hyperledger.besu.plugin.data.BlockHeader;
+import org.hyperledger.besu.plugin.data.ProcessableBlockHeader;
 
-public interface StateRootCommitter {
+public interface StateRootCommitter <T extends BlockHeader & ProcessableBlockHeader> {
   Hash computeRootAndCommit(
-      MutableWorldState worldState,
+      MutableWorldState<T> worldState,
       WorldStateKeyValueStorage.Updater stateUpdater,
-      BlockHeader blockHeader,
+      T blockHeader,
       WorldStateConfig worldStateConfig);
 
   default void cancel() {}

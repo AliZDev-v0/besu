@@ -33,7 +33,7 @@ import org.hyperledger.besu.ethereum.trie.pathbased.common.storage.PathBasedWorl
 import org.hyperledger.besu.ethereum.trie.pathbased.common.trielog.TrieLogManager;
 import org.hyperledger.besu.ethereum.trie.pathbased.common.worldview.accumulator.PathBasedWorldStateUpdateAccumulator;
 import org.hyperledger.besu.evm.account.Account;
-import org.hyperledger.besu.plugin.data.BlockHeader;
+import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.plugin.services.exception.StorageException;
 import org.hyperledger.besu.plugin.services.storage.KeyValueStorageTransaction;
 import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
@@ -53,7 +53,7 @@ import org.apache.tuweni.units.bigints.UInt256;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class PathBasedWorldState extends BaseMutableWorldState
+public abstract class PathBasedWorldState extends BaseMutableWorldState<BlockHeader>
     implements PathBasedWorldView, StorageSubscriber {
 
   private static final Logger LOG = LoggerFactory.getLogger(PathBasedWorldState.class);

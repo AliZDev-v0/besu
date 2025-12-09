@@ -16,18 +16,19 @@ package org.hyperledger.besu.ethereum.mainnet.staterootcommitter;
 
 import org.hyperledger.besu.datatypes.Hash;
 import org.hyperledger.besu.plugin.data.BlockHeader;
+import org.hyperledger.besu.plugin.data.ProcessableBlockHeader;
 import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
 import org.hyperledger.besu.plugin.services.storage.StateRootCommitter;
 import org.hyperledger.besu.plugin.services.storage.WorldStateConfig;
 import org.hyperledger.besu.plugin.services.storage.WorldStateKeyValueStorage;
 
-public final class StateRootCommitterImplSync implements StateRootCommitter {
+public final class StateRootCommitterImplSync<T extends BlockHeader & ProcessableBlockHeader> implements StateRootCommitter<T> {
 
   @Override
   public Hash computeRootAndCommit(
-      final MutableWorldState worldState,
+      final MutableWorldState<T> worldState,
       final WorldStateKeyValueStorage.Updater stateUpdater,
-      final BlockHeader blockHeader,
+      final T blockHeader,
       final WorldStateConfig cfg) {
     return worldState.calculateOrReadRootHash(stateUpdater, blockHeader, cfg);
   }

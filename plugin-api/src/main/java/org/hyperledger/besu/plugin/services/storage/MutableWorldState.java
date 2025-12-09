@@ -18,8 +18,9 @@ import org.hyperledger.besu.datatypes.Hash;
 import org.hyperledger.besu.evm.worldstate.MutableWorldView;
 import org.hyperledger.besu.evm.worldstate.WorldState;
 import org.hyperledger.besu.plugin.data.BlockHeader;
+import org.hyperledger.besu.plugin.data.ProcessableBlockHeader;
 
-public interface MutableWorldState extends WorldState, MutableWorldView {
+public interface MutableWorldState <T extends BlockHeader & ProcessableBlockHeader> extends WorldState, MutableWorldView {
 
   /**
    * Persist accumulated changes to underlying storage.
@@ -30,23 +31,23 @@ public interface MutableWorldState extends WorldState, MutableWorldView {
    * @param committer An implementation of {@link StateRootCommitter} responsible for recomputing
    *     the state root and committing the state changes to storage.
    */
-  void persist(BlockHeader blockHeader, StateRootCommitter committer);
+  void persist(T blockHeader, StateRootCommitter<T> committer);
 
-  void persist(final BlockHeader blockHeader);
+  void persist(final T blockHeader);
 
   default Hash calculateOrReadRootHash(
       final WorldStateKeyValueStorage.Updater stateUpdater,
-      final BlockHeader blockHeader,
+      final T blockHeader,
       final WorldStateConfig cfg) {
     throw new UnsupportedOperationException("calculateOrReadRootHash is not supported");
   }
 
-  default MutableWorldState freezeStorage() {
+  default MutableWorldState<T> freezeStorage() {
     // no op
     throw new UnsupportedOperationException("cannot freeze");
   }
 
-  default MutableWorldState disableTrie() {
+  default MutableWorldState<T> disableTrie() {
     // no op
     throw new UnsupportedOperationException("cannot disable trie");
   }
