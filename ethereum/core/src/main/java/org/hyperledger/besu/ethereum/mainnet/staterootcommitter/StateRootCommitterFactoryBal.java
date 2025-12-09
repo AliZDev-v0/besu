@@ -34,12 +34,12 @@ public final class StateRootCommitterFactoryBal implements StateRootCommitterFac
   }
 
   @Override
-  public StateRootCommitter forBlock(
+  public StateRootCommitter<BlockHeader> forBlock(
       final ProtocolContext protocolContext,
       final BlockHeader blockHeader,
       final Optional<BlockAccessList> maybeBal) {
     if (!balConfiguration.isBalOptimisationEnabled()) {
-      return new StateRootCommitterImplSync();
+      return new StateRootCommitterImplSync<>();
     }
 
     if (maybeBal.isEmpty()) {
@@ -49,7 +49,7 @@ public final class StateRootCommitterFactoryBal implements StateRootCommitterFac
 
     // This is temporary workaround to not launch state root pre-computation in Forest mode
     if (protocolContext.getWorldStateArchive() instanceof ForestWorldStateArchive) {
-      return new StateRootCommitterImplSync();
+      return new StateRootCommitterImplSync<>();
     }
 
     final CompletableFuture<BalRootComputation> balRootFuture =

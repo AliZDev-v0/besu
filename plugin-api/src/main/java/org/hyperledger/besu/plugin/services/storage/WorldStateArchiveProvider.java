@@ -15,8 +15,10 @@
 package org.hyperledger.besu.plugin.services.storage;
 
 import org.hyperledger.besu.evm.internal.EvmConfiguration;
+import org.hyperledger.besu.plugin.data.BlockHeader;
+import org.hyperledger.besu.plugin.data.ProcessableBlockHeader;
 
-public interface WorldStateArchiveProvider {
+public interface WorldStateArchiveProvider <T extends BlockHeader & ProcessableBlockHeader>{
 
   /**
    * Creates a world state archive instance.
@@ -25,7 +27,7 @@ public interface WorldStateArchiveProvider {
    * @param evmConfiguration the EVM configuration
    * @return a world state archive instance
    */
-  WorldStateArchive create(
+  WorldStateArchive<T> create(
       WorldStateKeyValueStorage worldStateKeyValueStorage,
       WorldStatePreimageStorage preimageStorage,
       EvmConfiguration evmConfiguration);
