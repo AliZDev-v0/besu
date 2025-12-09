@@ -18,6 +18,7 @@ import org.hyperledger.besu.datatypes.Address;
 import org.hyperledger.besu.datatypes.Hash;
 import org.hyperledger.besu.evm.worldstate.WorldState;
 import org.hyperledger.besu.plugin.data.BlockHeader;
+import org.hyperledger.besu.plugin.data.ProcessableBlockHeader;
 
 import java.io.Closeable;
 import java.util.List;
@@ -27,7 +28,8 @@ import java.util.function.Function;
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.units.bigints.UInt256;
 
-public interface WorldStateArchive extends Closeable {
+public interface WorldStateArchive<T extends BlockHeader & ProcessableBlockHeader>
+    extends Closeable {
   Optional<WorldState> get(Hash rootHash, Hash blockHash);
 
   boolean isWorldStateAvailable(Hash rootHash, Hash blockHash);
@@ -42,7 +44,7 @@ public interface WorldStateArchive extends Closeable {
    * @param worldStateQueryParams the query parameters
    * @return the mutable world state, if available
    */
-  Optional<MutableWorldState> getWorldState(WorldStateQueryParams worldStateQueryParams);
+  Optional<MutableWorldState<T>> getWorldState(WorldStateQueryParams<T> worldStateQueryParams);
 
   /**
    * Gets the head world state.
@@ -51,14 +53,14 @@ public interface WorldStateArchive extends Closeable {
    *
    * @return the head world state
    */
-  MutableWorldState getWorldState();
+  MutableWorldState<T> getWorldState();
 
   /**
    * Resetting the archive cache and adding the new pivot as the only entry
    *
    * @param blockHeader new pivot block header
    */
-  void resetArchiveStateTo(BlockHeader blockHeader);
+  void resetArchiveStateTo(T blockHeader);
 
   Optional<Bytes> getNodeData(Hash hash);
 
@@ -73,7 +75,7 @@ public interface WorldStateArchive extends Closeable {
    *     and mapped, or an empty Optional otherwise.
    */
   <U> Optional<U> getAccountProof(
-      final BlockHeader blockHeader,
+      final T blockHeader,
       final Address accountAddress,
       final List<UInt256> accountStorageKeys,
       final Function<Optional<WorldStateProof>, ? extends Optional<U>> mapper);

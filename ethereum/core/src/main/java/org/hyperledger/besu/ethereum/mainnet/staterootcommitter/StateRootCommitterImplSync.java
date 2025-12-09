@@ -22,7 +22,8 @@ import org.hyperledger.besu.plugin.services.storage.StateRootCommitter;
 import org.hyperledger.besu.plugin.services.storage.WorldStateConfig;
 import org.hyperledger.besu.plugin.services.storage.WorldStateKeyValueStorage;
 
-public final class StateRootCommitterImplSync<T extends BlockHeader & ProcessableBlockHeader> implements StateRootCommitter<T> {
+public final class StateRootCommitterImplSync<T extends BlockHeader & ProcessableBlockHeader>
+    implements StateRootCommitter<T> {
 
   @Override
   public Hash computeRootAndCommit(

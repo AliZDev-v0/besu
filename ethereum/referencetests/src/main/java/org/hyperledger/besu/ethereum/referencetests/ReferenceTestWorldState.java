@@ -34,7 +34,8 @@ import org.apache.tuweni.units.bigints.UInt256;
 
 /** Represent a worldState for testing. */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public interface ReferenceTestWorldState extends MutableWorldState<org.hyperledger.besu.ethereum.core.BlockHeader> {
+public interface ReferenceTestWorldState
+    extends MutableWorldState<org.hyperledger.besu.ethereum.core.BlockHeader> {
 
   @JsonIgnoreProperties(ignoreUnknown = true)
   class AccountMock {

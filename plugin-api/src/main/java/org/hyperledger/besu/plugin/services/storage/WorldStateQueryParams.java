@@ -16,16 +16,17 @@ package org.hyperledger.besu.plugin.services.storage;
 
 import org.hyperledger.besu.datatypes.Hash;
 import org.hyperledger.besu.plugin.data.BlockHeader;
+import org.hyperledger.besu.plugin.data.ProcessableBlockHeader;
 
 import java.util.Optional;
 
-public interface WorldStateQueryParams {
+public interface WorldStateQueryParams<T extends BlockHeader & ProcessableBlockHeader> {
   /**
    * Gets the block header.
    *
    * @return the block header
    */
-  BlockHeader getBlockHeader();
+  T getBlockHeader();
 
   /**
    * Checks if the world state should update the node head.

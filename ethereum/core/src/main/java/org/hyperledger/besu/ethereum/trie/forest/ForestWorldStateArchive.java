@@ -16,6 +16,7 @@ package org.hyperledger.besu.ethereum.trie.forest;
 
 import org.hyperledger.besu.datatypes.Address;
 import org.hyperledger.besu.datatypes.Hash;
+import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.proof.WorldStateProofProvider;
 import org.hyperledger.besu.ethereum.trie.MerkleTrie;
 import org.hyperledger.besu.ethereum.trie.forest.storage.ForestWorldStateKeyValueStorage;
@@ -23,7 +24,6 @@ import org.hyperledger.besu.ethereum.trie.forest.worldview.ForestMutableWorldSta
 import org.hyperledger.besu.ethereum.worldstate.WorldStateStorageCoordinator;
 import org.hyperledger.besu.evm.internal.EvmConfiguration;
 import org.hyperledger.besu.evm.worldstate.WorldState;
-import org.hyperledger.besu.plugin.data.BlockHeader;
 import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
 import org.hyperledger.besu.plugin.services.storage.WorldStateArchive;
 import org.hyperledger.besu.plugin.services.storage.WorldStatePreimageStorage;
@@ -37,7 +37,7 @@ import java.util.function.Function;
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.units.bigints.UInt256;
 
-public class ForestWorldStateArchive implements WorldStateArchive {
+public class ForestWorldStateArchive implements WorldStateArchive<BlockHeader> {
   private final ForestWorldStateKeyValueStorage worldStateKeyValueStorage;
   private final WorldStatePreimageStorage preimageStorage;
   private final WorldStateProofProvider worldStateProof;
@@ -67,7 +67,8 @@ public class ForestWorldStateArchive implements WorldStateArchive {
   }
 
   @Override
-  public Optional<MutableWorldState> getWorldState(final WorldStateQueryParams queryParams) {
+  public Optional<MutableWorldState<BlockHeader>> getWorldState(
+      final WorldStateQueryParams<BlockHeader> queryParams) {
     if (queryParams.getStateRoot().isEmpty()) {
       throw new IllegalArgumentException(
           "State root cannot be empty. A valid state root is required to retrieve the world state.");
@@ -76,11 +77,11 @@ public class ForestWorldStateArchive implements WorldStateArchive {
   }
 
   @Override
-  public MutableWorldState getWorldState() {
+  public MutableWorldState<BlockHeader> getWorldState() {
     return getWorldState(EMPTY_ROOT_HASH).get();
   }
 
-  private Optional<MutableWorldState> getWorldState(final Hash rootHash) {
+  private Optional<MutableWorldState<BlockHeader>> getWorldState(final Hash rootHash) {
     if (!worldStateKeyValueStorage.isWorldStateAvailable(rootHash)) {
       return Optional.empty();
     }

@@ -19,6 +19,7 @@ import static org.hyperledger.besu.ethereum.trie.pathbased.common.provider.World
 import org.hyperledger.besu.datatypes.Address;
 import org.hyperledger.besu.datatypes.Hash;
 import org.hyperledger.besu.ethereum.chain.Blockchain;
+import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.proof.WorldStateProofProvider;
 import org.hyperledger.besu.ethereum.trie.MerkleTrieException;
 import org.hyperledger.besu.ethereum.trie.pathbased.common.cache.PathBasedCachedWorldStorageManager;
@@ -31,7 +32,6 @@ import org.hyperledger.besu.ethereum.worldstate.WorldStateStorageCoordinator;
 import org.hyperledger.besu.evm.internal.EvmConfiguration;
 import org.hyperledger.besu.evm.worldstate.WorldState;
 import org.hyperledger.besu.plugin.ServiceManager;
-import org.hyperledger.besu.plugin.data.BlockHeader;
 import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
 import org.hyperledger.besu.plugin.services.storage.WorldStateArchive;
 import org.hyperledger.besu.plugin.services.storage.WorldStateProof;
@@ -48,7 +48,7 @@ import org.apache.tuweni.units.bigints.UInt256;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class PathBasedWorldStateProvider implements WorldStateArchive {
+public abstract class PathBasedWorldStateProvider implements WorldStateArchive<BlockHeader> {
 
   private static final Logger LOG = LoggerFactory.getLogger(PathBasedWorldStateProvider.class);
 
@@ -142,7 +142,8 @@ public abstract class PathBasedWorldStateProvider implements WorldStateArchive {
    * @throws RuntimeException if the world state is not configured to be stateful
    */
   @Override
-  public Optional<MutableWorldState> getWorldState(final WorldStateQueryParams queryParams) {
+  public Optional<MutableWorldState<BlockHeader>> getWorldState(
+      final WorldStateQueryParams queryParams) {
     if (worldStateConfig.isStateful()) {
       return getFullWorldState(queryParams);
     } else {
@@ -178,7 +179,8 @@ public abstract class PathBasedWorldStateProvider implements WorldStateArchive {
    * @param queryParams the query parameters
    * @return the stateful world state, if available
    */
-  protected Optional<MutableWorldState> getFullWorldState(final WorldStateQueryParams queryParams) {
+  protected Optional<MutableWorldState<BlockHeader>> getFullWorldState(
+      final WorldStateQueryParams<BlockHeader> queryParams) {
     return queryParams.shouldWorldStateUpdateHead()
         ? getFullWorldStateFromHead(queryParams.getBlockHash())
         : getFullWorldStateFromCache(queryParams.getBlockHeader());
@@ -198,7 +200,7 @@ public abstract class PathBasedWorldStateProvider implements WorldStateArchive {
    * @param blockHash the block hash
    * @return the full world state, if available
    */
-  private Optional<MutableWorldState> getFullWorldStateFromHead(final Hash blockHash) {
+  private Optional<MutableWorldState<BlockHeader>> getFullWorldStateFromHead(final Hash blockHash) {
     return rollFullWorldStateToBlockHash(headWorldState, blockHash);
   }
 
@@ -218,7 +220,8 @@ public abstract class PathBasedWorldStateProvider implements WorldStateArchive {
    * @param blockHeader the block header
    * @return the full world state, if available
    */
-  private Optional<MutableWorldState> getFullWorldStateFromCache(final BlockHeader blockHeader) {
+  private Optional<MutableWorldState<BlockHeader>> getFullWorldStateFromCache(
+      final BlockHeader blockHeader) {
     final BlockHeader chainHeadBlockHeader = blockchain.getChainHeadHeader();
     if (chainHeadBlockHeader.getNumber() - blockHeader.getNumber()
         >= trieLogManager.getMaxLayersToLoad()) {
@@ -240,7 +243,7 @@ public abstract class PathBasedWorldStateProvider implements WorldStateArchive {
         .map(MutableWorldState::freezeStorage);
   }
 
-  private Optional<MutableWorldState> rollFullWorldStateToBlockHash(
+  private Optional<MutableWorldState<BlockHeader>> rollFullWorldStateToBlockHash(
       final PathBasedWorldState mutableState, final Hash blockHash) {
     if (blockHash.equals(mutableState.blockHash())) {
       return Optional.of(mutableState);

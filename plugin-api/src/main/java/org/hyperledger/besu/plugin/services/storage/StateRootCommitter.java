@@ -18,7 +18,7 @@ import org.hyperledger.besu.datatypes.Hash;
 import org.hyperledger.besu.plugin.data.BlockHeader;
 import org.hyperledger.besu.plugin.data.ProcessableBlockHeader;
 
-public interface StateRootCommitter <T extends BlockHeader & ProcessableBlockHeader> {
+public interface StateRootCommitter<T extends BlockHeader & ProcessableBlockHeader> {
   Hash computeRootAndCommit(
       MutableWorldState<T> worldState,
       WorldStateKeyValueStorage.Updater stateUpdater,

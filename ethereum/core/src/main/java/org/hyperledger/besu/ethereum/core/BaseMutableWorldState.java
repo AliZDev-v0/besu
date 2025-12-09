@@ -17,7 +17,9 @@ package org.hyperledger.besu.ethereum.core;
 import org.hyperledger.besu.ethereum.mainnet.staterootcommitter.StateRootCommitterImplSync;
 import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
 
-public abstract class BaseMutableWorldState <T extends  org.hyperledger.besu.ethereum.core.BlockHeader> implements MutableWorldState<T> {
+public abstract class BaseMutableWorldState<
+        T extends org.hyperledger.besu.ethereum.core.BlockHeader>
+    implements MutableWorldState<T> {
 
   @Override
   public void persist(final T blockHeader) {

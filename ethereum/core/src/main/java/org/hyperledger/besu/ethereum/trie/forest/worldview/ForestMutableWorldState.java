@@ -18,6 +18,7 @@ import org.hyperledger.besu.datatypes.Address;
 import org.hyperledger.besu.datatypes.Hash;
 import org.hyperledger.besu.datatypes.Wei;
 import org.hyperledger.besu.ethereum.core.BaseMutableWorldState;
+import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.rlp.RLP;
 import org.hyperledger.besu.ethereum.rlp.RLPException;
 import org.hyperledger.besu.ethereum.rlp.RLPInput;
@@ -33,7 +34,6 @@ import org.hyperledger.besu.evm.worldstate.AbstractWorldUpdater;
 import org.hyperledger.besu.evm.worldstate.UpdateTrackingAccount;
 import org.hyperledger.besu.evm.worldstate.WorldState;
 import org.hyperledger.besu.evm.worldstate.WorldUpdater;
-import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.plugin.services.storage.StateRootCommitter;
 import org.hyperledger.besu.plugin.services.storage.WorldStateConfig;
 import org.hyperledger.besu.plugin.services.storage.WorldStateKeyValueStorage;
@@ -54,7 +54,7 @@ import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.bytes.Bytes32;
 import org.apache.tuweni.units.bigints.UInt256;
 
-public class ForestMutableWorldState extends BaseMutableWorldState<org.hyperledger.besu.ethereum.core.BlockHeader> {
+public class ForestMutableWorldState extends BaseMutableWorldState<BlockHeader> {
 
   private final EvmConfiguration evmConfiguration;
   private final ForestWorldStateKeyValueStorage worldStateKeyValueStorage;
@@ -177,7 +177,8 @@ public class ForestMutableWorldState extends BaseMutableWorldState<org.hyperledg
   }
 
   @Override
-  public void persist(final BlockHeader blockHeader, final StateRootCommitter<BlockHeader> committer) {
+  public void persist(
+      final BlockHeader blockHeader, final StateRootCommitter<BlockHeader> committer) {
     final ForestWorldStateKeyValueStorage.Updater stateUpdater =
         worldStateKeyValueStorage.updater();
     committer.computeRootAndCommit(

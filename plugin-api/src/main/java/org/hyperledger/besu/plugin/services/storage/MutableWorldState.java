@@ -20,7 +20,8 @@ import org.hyperledger.besu.evm.worldstate.WorldState;
 import org.hyperledger.besu.plugin.data.BlockHeader;
 import org.hyperledger.besu.plugin.data.ProcessableBlockHeader;
 
-public interface MutableWorldState <T extends BlockHeader & ProcessableBlockHeader> extends WorldState, MutableWorldView {
+public interface MutableWorldState<T extends BlockHeader & ProcessableBlockHeader>
+    extends WorldState, MutableWorldView {
 
   /**
    * Persist accumulated changes to underlying storage.
