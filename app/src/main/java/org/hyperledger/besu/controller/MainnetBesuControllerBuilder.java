@@ -46,8 +46,8 @@ public class MainnetBesuControllerBuilder extends BesuControllerBuilder {
       final MiningConfiguration miningConfiguration,
       final SyncState syncState,
       final EthProtocolManager ethProtocolManager) {
-      return new NoopMiningCoordinator();
-     }
+    return new NoopMiningCoordinator();
+  }
 
   @Override
   protected ConsensusContext createConsensusContext(
