@@ -59,16 +59,13 @@ public class BlockMinerTest {
         new Block(
             headerBuilder.buildHeader(), new BlockBody(Lists.newArrayList(), Lists.newArrayList()));
 
-    final PoWBlockCreator blockCreator = mock(PoWBlockCreator.class);
-    final Function<BlockHeader, PoWBlockCreator> blockCreatorSupplier =
+    final AbstractBlockCreator blockCreator = mock(AbstractBlockCreator.class);
+    final Function<BlockHeader, AbstractBlockCreator> blockCreatorSupplier =
         (parentHeader) -> blockCreator;
     when(blockCreator.createBlock(anyLong(), any()))
         .thenReturn(
             new BlockCreationResult(
-                blockToCreate,
-                new TransactionSelectionResults(),
-                new BlockCreationTiming(),
-                Optional.empty()));
+                blockToCreate, new TransactionSelectionResults(), new BlockCreationTiming(), Optional.empty()));
 
     final BlockImporter blockImporter = mock(BlockImporter.class);
     final ProtocolSpec protocolSpec = mock(ProtocolSpec.class);
@@ -76,14 +73,13 @@ public class BlockMinerTest {
     final ProtocolSchedule protocolSchedule = singleSpecSchedule(protocolSpec);
 
     when(protocolSpec.getBlockImporter()).thenReturn(blockImporter);
-    when(blockImporter.importBlock(any(), any(), any(), any(), any()))
-        .thenReturn(new BlockImportResult(true));
+    when(blockImporter.importBlock(any(), any(), any())).thenReturn(new BlockImportResult(true));
 
     final MinedBlockObserver observer = mock(MinedBlockObserver.class);
     final DefaultBlockScheduler scheduler = mock(DefaultBlockScheduler.class);
     when(scheduler.waitUntilNextBlockCanBeMined(any())).thenReturn(5L);
-    final BlockMiner<PoWBlockCreator> miner =
-        new PoWBlockMiner(
+    final BlockMiner<AbstractBlockCreator> miner =
+        new BlockMiner<>(
             blockCreatorSupplier,
             protocolSchedule,
             protocolContext,
@@ -92,13 +88,7 @@ public class BlockMinerTest {
             headerBuilder.buildHeader()); // parent header is arbitrary for the test.
 
     miner.run();
-    verify(blockImporter)
-        .importBlock(
-            protocolContext,
-            blockToCreate,
-            HeaderValidationMode.FULL,
-            HeaderValidationMode.FULL,
-            Optional.empty());
+    verify(blockImporter).importBlock(protocolContext, blockToCreate, HeaderValidationMode.FULL);
     verify(observer, times(1)).blockMined(blockToCreate);
   }
 
@@ -110,16 +100,13 @@ public class BlockMinerTest {
         new Block(
             headerBuilder.buildHeader(), new BlockBody(Lists.newArrayList(), Lists.newArrayList()));
 
-    final PoWBlockCreator blockCreator = mock(PoWBlockCreator.class);
-    final Function<BlockHeader, PoWBlockCreator> blockCreatorSupplier =
+    final AbstractBlockCreator blockCreator = mock(AbstractBlockCreator.class);
+    final Function<BlockHeader, AbstractBlockCreator> blockCreatorSupplier =
         (parentHeader) -> blockCreator;
     when(blockCreator.createBlock(anyLong(), any()))
         .thenReturn(
             new BlockCreationResult(
-                blockToCreate,
-                new TransactionSelectionResults(),
-                new BlockCreationTiming(),
-                Optional.empty()));
+                blockToCreate, new TransactionSelectionResults(), new BlockCreationTiming(), Optional.empty()));
 
     final BlockImporter blockImporter = mock(BlockImporter.class);
     final ProtocolSpec protocolSpec = mock(ProtocolSpec.class);
@@ -127,7 +114,7 @@ public class BlockMinerTest {
     final ProtocolSchedule protocolSchedule = singleSpecSchedule(protocolSpec);
 
     when(protocolSpec.getBlockImporter()).thenReturn(blockImporter);
-    when(blockImporter.importBlock(any(), any(), any(), any(), any()))
+    when(blockImporter.importBlock(any(), any(), any()))
         .thenReturn(
             new BlockImportResult(false),
             new BlockImportResult(false),
@@ -136,8 +123,8 @@ public class BlockMinerTest {
     final MinedBlockObserver observer = mock(MinedBlockObserver.class);
     final DefaultBlockScheduler scheduler = mock(DefaultBlockScheduler.class);
     when(scheduler.waitUntilNextBlockCanBeMined(any())).thenReturn(5L);
-    final BlockMiner<PoWBlockCreator> miner =
-        new PoWBlockMiner(
+    final BlockMiner<AbstractBlockCreator> miner =
+        new BlockMiner<>(
             blockCreatorSupplier,
             protocolSchedule,
             protocolContext,
@@ -147,12 +134,7 @@ public class BlockMinerTest {
 
     miner.run();
     verify(blockImporter, times(3))
-        .importBlock(
-            protocolContext,
-            blockToCreate,
-            HeaderValidationMode.FULL,
-            HeaderValidationMode.FULL,
-            Optional.empty());
+        .importBlock(protocolContext, blockToCreate, HeaderValidationMode.FULL);
     verify(observer, times(1)).blockMined(blockToCreate);
   }
 
@@ -164,16 +146,13 @@ public class BlockMinerTest {
         new Block(
             headerBuilder.buildHeader(), new BlockBody(Lists.newArrayList(), Lists.newArrayList()));
 
-    final PoWBlockCreator blockCreator = mock(PoWBlockCreator.class);
-    final Function<BlockHeader, PoWBlockCreator> blockCreatorSupplier =
+    final AbstractBlockCreator blockCreator = mock(AbstractBlockCreator.class);
+    final Function<BlockHeader, AbstractBlockCreator> blockCreatorSupplier =
         (parentHeader) -> blockCreator;
     when(blockCreator.createBlock(anyLong(), any()))
         .thenReturn(
             new BlockCreationResult(
-                blockToCreate,
-                new TransactionSelectionResults(),
-                new BlockCreationTiming(),
-                Optional.empty()));
+                blockToCreate, new TransactionSelectionResults(), new BlockCreationTiming(), Optional.empty()));
 
     final BlockImporter blockImporter = mock(BlockImporter.class);
     final ProtocolSpec protocolSpec = mock(ProtocolSpec.class);
@@ -181,14 +160,13 @@ public class BlockMinerTest {
     final ProtocolSchedule protocolSchedule = singleSpecSchedule(protocolSpec);
 
     when(protocolSpec.getBlockImporter()).thenReturn(blockImporter);
-    when(blockImporter.importBlock(any(), any(), any(), any(), any()))
-        .thenReturn(new BlockImportResult(true));
+    when(blockImporter.importBlock(any(), any(), any())).thenReturn(new BlockImportResult(true));
 
     final MinedBlockObserver observer = mock(MinedBlockObserver.class);
     final DefaultBlockScheduler scheduler = mock(DefaultBlockScheduler.class);
     when(scheduler.waitUntilNextBlockCanBeMined(any())).thenReturn(5L);
     final AtomicInteger importValidationCount = new AtomicInteger();
-    final BlockMiner<PoWBlockCreator> miner =
+    final BlockMiner<AbstractBlockCreator> miner =
         new BlockMiner<>(
             blockCreatorSupplier,
             protocolSchedule,
@@ -205,12 +183,7 @@ public class BlockMinerTest {
     miner.run();
     assertThat(importValidationCount.get()).isEqualTo(2);
     verify(blockImporter, times(1))
-        .importBlock(
-            protocolContext,
-            blockToCreate,
-            HeaderValidationMode.FULL,
-            HeaderValidationMode.FULL,
-            Optional.empty());
+        .importBlock(protocolContext, blockToCreate, HeaderValidationMode.FULL);
     verify(observer, times(1)).blockMined(blockToCreate);
   }
 
