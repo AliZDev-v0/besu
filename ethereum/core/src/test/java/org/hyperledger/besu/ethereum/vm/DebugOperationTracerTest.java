@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.apache.tuweni.bytes.Bytes;
 import org.hyperledger.besu.datatypes.Wei;
 import org.hyperledger.besu.ethereum.core.BlockHeader;
 import org.hyperledger.besu.ethereum.core.BlockHeaderTestFixture;
@@ -38,6 +39,7 @@ import org.hyperledger.besu.evm.tracing.OpCodeTracerConfigBuilder.OpCodeTracerCo
 import org.hyperledger.besu.evm.tracing.TraceFrame;
 import org.hyperledger.besu.evm.worldstate.WorldUpdater;
 
+import java.util.List;
 import java.util.Map;
 import java.util.OptionalLong;
 import java.util.TreeMap;
@@ -312,6 +314,115 @@ class DebugOperationTracerTest {
     frame.setPC(10);
     return frame;
   }
+
+  // ---- Issue #9584: Reduce memory usage of debug_trace* calls ----
+
+  /**
+   * Documents the current bug: captureMemory() clones the full Bytes[] on every single frame, even
+   * when no memory-writing opcode ran between frames. With 50 frames and 512 bytes of memory, the
+   * current code allocates 50 × 512 = 25,600 bytes; the fix should reduce this to 512 bytes (one
+   * shared snapshot).
+   *
+   * <p>This test currently FAILS and is expected to PASS after the fix is applied.
+   */
+  @Test
+  void shouldReuseMemoryReferenceAcrossFramesWhenNoMemoryWriteOccurs() {
+    final int memoryWords = 16; // 16 × 32 = 512 bytes
+    final int frameCount = 50;
+
+    final MessageFrame frame = validMessageFrame();
+    for (int i = 0; i < memoryWords; i++) {
+      frame.writeMemory(i * 32L, 32, Bytes32.fromHexString(String.format("0x%064x", i + 1)));
+    }
+    assertThat(frame.memoryWordSize()).isEqualTo(memoryWords);
+
+    final OpCodeTracerConfig config =
+        OpCodeTracerConfigBuilder.createFrom(OpCodeTracerConfig.DEFAULT)
+            .traceMemory(true)
+            .traceStack(false)
+            .traceStorage(false)
+            .build();
+    final DebugOperationTracer tracer = new DebugOperationTracer(config, false);
+
+    // Run frameCount traces with a non-memory-writing opcode (MUL)
+    for (int i = 0; i < frameCount; i++) {
+      tracer.tracePreExecution(frame);
+      tracer.tracePostExecution(frame, new OperationResult(3L, null));
+    }
+
+    final List<TraceFrame> frames = tracer.getTraceFrames();
+    assertThat(frames).hasSize(frameCount);
+
+    // After fix: all frames should share the same Bytes[] instance — no redundant copies
+    final Bytes[] baseline = frames.get(0).getMemory().get();
+    for (int i = 1; i < frames.size(); i++) {
+      assertThat(frames.get(i).getMemory().get())
+          .as(
+              "Frame %d: memory reference should be shared with frame 0 "
+                  + "(no memory-writing opcode ran between frames)",
+              i)
+          .isSameAs(baseline);
+    }
+  }
+
+  /**
+   * Verifies that after a memory-writing opcode (e.g., MSTORE), the tracer captures a fresh memory
+   * snapshot with the updated content, and that the snapshot is distinct from the previous frame's.
+   *
+   * <p>This test currently PASSES (we always copy), and must continue to PASS after the fix.
+   */
+  @Test
+  void shouldTakeNewMemorySnapshotAfterExplicitMemoryWrite() {
+    final Bytes32 initialValue = Bytes32.fromHexString("0x" + "aa".repeat(32));
+    final Bytes32 updatedValue = Bytes32.fromHexString("0x" + "cc".repeat(32));
+
+    final Operation memoryWritingOp =
+        new AbstractOperation(0x52, "MSTORE", 2, 0, null) {
+          @Override
+          public OperationResult execute(final MessageFrame frame, final EVM evm) {
+            // explicitMemoryUpdate=true simulates what MSTORE does in the real EVM
+            frame.writeMemory(0L, 32, updatedValue, true);
+            return new OperationResult(3L, null);
+          }
+        };
+
+    final MessageFrame frame = validMessageFrameBuilder().build();
+    frame.writeMemory(0L, 32, initialValue);
+    frame.setCurrentOperation(anOperation); // non-memory-writing op first
+
+    final OpCodeTracerConfig config =
+        OpCodeTracerConfigBuilder.createFrom(OpCodeTracerConfig.DEFAULT)
+            .traceMemory(true)
+            .traceStack(false)
+            .traceStorage(false)
+            .build();
+    final DebugOperationTracer tracer = new DebugOperationTracer(config, false);
+
+    // Frame 0: non-memory-writing op
+    tracer.tracePreExecution(frame);
+    tracer.tracePostExecution(frame, new OperationResult(3L, null));
+
+    // Frame 1: memory-writing op
+    frame.setCurrentOperation(memoryWritingOp);
+    tracer.tracePreExecution(frame);
+    memoryWritingOp.execute(frame, null);
+    tracer.tracePostExecution(frame, new OperationResult(3L, null));
+
+    final List<TraceFrame> frames = tracer.getTraceFrames();
+    assertThat(frames).hasSize(2);
+
+    final Bytes[] before = frames.get(0).getMemory().get();
+    final Bytes[] after = frames.get(1).getMemory().get();
+
+    // A memory write must produce a distinct snapshot with updated content
+    assertThat(after)
+        .as("After a memory-writing opcode, a new memory snapshot must be taken")
+        .isNotSameAs(before);
+    assertThat(before[0]).isEqualTo(initialValue);
+    assertThat(after[0]).isEqualTo(updatedValue);
+  }
+
+  // ---- End issue #9584 ----
 
   private MessageFrame validCallFrame() {
     final MessageFrame frame = validMessageFrameBuilder().build();
