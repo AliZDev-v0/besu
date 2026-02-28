@@ -34,8 +34,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
-import java.util.TreeMap;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.units.bigints.UInt256;
@@ -169,7 +169,7 @@ public class DebugOperationTracer implements OperationTracer {
             .setSoftFailureReason(operationResult.getSoftFailureReason())
             .setGasAvailableForChildCall(operationResult.getGasAvailableForChildCall())
             .build();
-    if (WRITING_OPERATIONS.contains(currentOperation.getName())) {
+    if (WRITING_OPERATIONS.contains(currentOperation.getName()) || traceFrames.isEmpty()) {
       traceFrames.add(lastFrame);
     }
     frame.reset();
