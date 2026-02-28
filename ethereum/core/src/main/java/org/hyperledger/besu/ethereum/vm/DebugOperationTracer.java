@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.TreeMap;
+import java.util.Set;
 
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.units.bigints.UInt256;
@@ -52,7 +53,7 @@ public class DebugOperationTracer implements OperationTracer {
 
   private List<TraceFrame> traceFrames = new ArrayList<>();
   private TraceFrame lastFrame;
-
+  private final Set<String> WRITING_OPERATIONS = Set.of("MSTORE", "KECCAK256");
   private Optional<Bytes[]> preExecutionStack;
   private long gasRemaining;
   private Bytes inputData;
@@ -119,7 +120,6 @@ public class DebugOperationTracer implements OperationTracer {
     final Bytes outputData = frame.getOutputData();
     final Optional<Bytes[]> memory = captureMemory(frame);
     final Optional<Bytes[]> stackPostExecution = captureStack(frame);
-
     if (!traceFrames.isEmpty()) {
       final TraceFrame lastTraceFrame = traceFrames.removeLast();
       final TraceFrame updatedLast =
@@ -169,8 +169,9 @@ public class DebugOperationTracer implements OperationTracer {
             .setSoftFailureReason(operationResult.getSoftFailureReason())
             .setGasAvailableForChildCall(operationResult.getGasAvailableForChildCall())
             .build();
-
-    traceFrames.add(lastFrame);
+    if (WRITING_OPERATIONS.contains(currentOperation.getName())) {
+      traceFrames.add(lastFrame);
+    }
     frame.reset();
   }
 
