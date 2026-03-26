@@ -191,4 +191,15 @@ public class BesuControllerTest {
 
     assertThat(besuControllerBuilder).isInstanceOf(TransitionBesuControllerBuilder.class);
   }
+
+  @Test
+  public void noConsensusInGenesisFallsBackToPoS() {
+    final GenesisConfig genesisConfigNoConsensus =
+        GenesisConfig.fromConfig("{\"config\":{},\"difficulty\":\"0x0\",\"gasLimit\":\"0x0\"}");
+
+    final BesuControllerBuilder besuControllerBuilder =
+        new BesuController.Builder().fromGenesisFile(genesisConfigNoConsensus, SyncMode.FULL);
+
+    assertThat(besuControllerBuilder).isInstanceOf(MergeBesuControllerBuilder.class);
+  }
 }
