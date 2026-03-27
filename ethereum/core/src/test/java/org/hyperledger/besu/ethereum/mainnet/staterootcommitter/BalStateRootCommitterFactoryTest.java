@@ -110,7 +110,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     final BonsaiWorldState worldState = getWorldState(false);
@@ -163,7 +163,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     final BonsaiWorldState worldState = getWorldState(false);
@@ -215,7 +215,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     final BonsaiWorldState worldState = getWorldState(false);
@@ -269,7 +269,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     try (BonsaiWorldState worldState = getWorldState(false)) {
@@ -319,7 +319,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     try (BonsaiWorldState worldState = getWorldState(false)) {
@@ -367,7 +367,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     committer.cancel();
@@ -390,10 +390,11 @@ class BalStateRootCommitterFactoryTest {
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
 
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.empty());
 
-    assertThat(committer).isSameAs(StateRootCommitter.SYNCHRONOUS);
+    assertThat(committer)
+        .isSameAs(org.hyperledger.besu.plugin.services.storage.StateRootCommitter.SYNCHRONOUS);
   }
 
   @Test
@@ -455,7 +456,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     final BonsaiWorldState worldState = getWorldState(false);
@@ -498,7 +499,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     try (BonsaiWorldState worldState = getWorldState(false)) {
@@ -544,7 +545,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     // DON'T make any changes to worldState, let BAL import them
@@ -596,7 +597,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     // DON'T make any changes to worldState, let BAL import them
@@ -671,7 +672,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     final BonsaiWorldState verifyWorldState = getWorldState(true);
@@ -738,7 +739,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     try (BonsaiWorldState verifyWorldState = getWorldState(true)) {
@@ -820,7 +821,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     // DON'T make any changes, let BAL import everything
@@ -880,7 +881,7 @@ class BalStateRootCommitterFactoryTest {
             .build();
 
     final StateRootCommitterFactory factory = new BalStateRootCommitterFactory(balConfig);
-    final StateRootCommitter committer =
+    final org.hyperledger.besu.plugin.services.storage.StateRootCommitter committer =
         factory.forBlock(protocolContext, blockHeader, Optional.of(bal));
 
     // Make sync changes (different from BAL)

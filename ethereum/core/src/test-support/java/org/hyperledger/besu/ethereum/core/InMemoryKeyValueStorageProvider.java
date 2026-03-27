@@ -118,7 +118,8 @@ public class InMemoryKeyValueStorageProvider extends KeyValueStorageProvider {
         new CodeCache());
   }
 
-  public static MutableWorldState createInMemoryWorldState() {
+  public static org.hyperledger.besu.plugin.services.storage.MutableWorldState
+      createInMemoryWorldState() {
     final InMemoryKeyValueStorageProvider provider = new InMemoryKeyValueStorageProvider();
     return new ForestMutableWorldState(
         provider.createWorldStateStorage(DataStorageConfiguration.DEFAULT_FOREST_CONFIG),

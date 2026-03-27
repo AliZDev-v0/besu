@@ -82,7 +82,8 @@ public class MessageFrameTestFixture {
     return this;
   }
 
-  public MessageFrameTestFixture worldUpdater(final MutableWorldState worldState) {
+  public MessageFrameTestFixture worldUpdater(
+      final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState) {
     this.worldUpdater = Optional.of(worldState.updater());
     return this;
   }

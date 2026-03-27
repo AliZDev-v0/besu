@@ -22,10 +22,10 @@ import java.util.Optional;
 
 public final class DefaultStateRootCommitterFactory implements StateRootCommitterFactory {
   @Override
-  public StateRootCommitter forBlock(
+  public org.hyperledger.besu.plugin.services.storage.StateRootCommitter forBlock(
       final ProtocolContext protocolContext,
       final BlockHeader blockHeader,
       final Optional<BlockAccessList> maybeBal) {
-    return StateRootCommitter.SYNCHRONOUS;
+    return org.hyperledger.besu.plugin.services.storage.StateRootCommitter.SYNCHRONOUS;
   }
 }

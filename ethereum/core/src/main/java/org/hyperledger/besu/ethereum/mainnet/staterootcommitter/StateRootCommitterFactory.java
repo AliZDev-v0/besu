@@ -21,6 +21,6 @@ import org.hyperledger.besu.plugin.data.BlockHeader;
 import java.util.Optional;
 
 public interface StateRootCommitterFactory {
-  StateRootCommitter forBlock(
+  org.hyperledger.besu.plugin.services.storage.StateRootCommitter forBlock(
       ProtocolContext protocolContext, BlockHeader blockHeader, Optional<BlockAccessList> maybeBal);
 }

@@ -151,7 +151,8 @@ public class BlockDataGenerator {
       final List<UInt256> storageKeys) {
     final List<Block> seq = new ArrayList<>(count);
 
-    final MutableWorldState worldState = worldStateArchive.getWorldState();
+    final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState =
+        worldStateArchive.getWorldState();
 
     long nextBlockNumber = nextBlock;
     Hash parentHash = parent;
@@ -210,7 +211,8 @@ public class BlockDataGenerator {
       final List<UInt256> storageKeys) {
     final List<BlockWithAccessList> seq = new ArrayList<>(count);
 
-    final MutableWorldState worldState = worldStateArchive.getWorldState();
+    final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState =
+        worldStateArchive.getWorldState();
 
     long nextBlockNumber = nextBlock;
     Hash parentHash = parent;
@@ -288,17 +290,20 @@ public class BlockDataGenerator {
         Collections.emptyList());
   }
 
-  public List<Account> createRandomAccounts(final MutableWorldState worldState, final int count) {
+  public List<Account> createRandomAccounts(
+      final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState,
+      final int count) {
     return createRandomAccounts(worldState, count, .5f, .75f);
   }
 
   public List<Account> createRandomContractAccountsWithNonEmptyStorage(
-      final MutableWorldState worldState, final int count) {
+      final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState,
+      final int count) {
     return createRandomAccounts(worldState, count, 1f, 1f);
   }
 
   private List<Account> createRandomAccounts(
-      final MutableWorldState worldState,
+      final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState,
       final int count,
       final float percentContractAccounts,
       final float percentContractAccountsWithNonEmptyStorage) {
