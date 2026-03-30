@@ -42,6 +42,7 @@ import org.hyperledger.besu.ethereum.worldstate.WorldStateArchive;
 import org.hyperledger.besu.evm.account.Account;
 import org.hyperledger.besu.evm.account.MutableAccount;
 import org.hyperledger.besu.evm.worldstate.WorldUpdater;
+import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
 
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
@@ -70,7 +71,6 @@ import org.apache.tuweni.units.bigints.UInt256;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
 
 public class BlockDataGenerator {
 
@@ -152,8 +152,7 @@ public class BlockDataGenerator {
       final List<UInt256> storageKeys) {
     final List<Block> seq = new ArrayList<>(count);
 
-    final MutableWorldState worldState =
-        worldStateArchive.getWorldState();
+    final MutableWorldState worldState = worldStateArchive.getWorldState();
 
     long nextBlockNumber = nextBlock;
     Hash parentHash = parent;
@@ -212,8 +211,7 @@ public class BlockDataGenerator {
       final List<UInt256> storageKeys) {
     final List<BlockWithAccessList> seq = new ArrayList<>(count);
 
-    final MutableWorldState worldState =
-        worldStateArchive.getWorldState();
+    final MutableWorldState worldState = worldStateArchive.getWorldState();
 
     long nextBlockNumber = nextBlock;
     Hash parentHash = parent;
@@ -291,15 +289,12 @@ public class BlockDataGenerator {
         Collections.emptyList());
   }
 
-  public List<Account> createRandomAccounts(
-      final MutableWorldState worldState,
-      final int count) {
+  public List<Account> createRandomAccounts(final MutableWorldState worldState, final int count) {
     return createRandomAccounts(worldState, count, .5f, .75f);
   }
 
   public List<Account> createRandomContractAccountsWithNonEmptyStorage(
-      final MutableWorldState worldState,
-      final int count) {
+      final MutableWorldState worldState, final int count) {
     return createRandomAccounts(worldState, count, 1f, 1f);
   }
 
