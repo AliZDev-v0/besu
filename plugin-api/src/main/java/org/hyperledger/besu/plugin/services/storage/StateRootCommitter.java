@@ -53,13 +53,14 @@ public interface StateRootCommitter {
       WorldStateKeyValueStorage.Updater stateUpdater,
       BlockHeader blockHeader);
 
-  /** Cancel */
+  /** Cancels any ongoing state root computation. */
   default void cancel() {}
 
   /**
-   * timed
+   * Wraps this committer with timing instrumentation.
    *
-   * @param timer timer
+   * @param timer the timer used to measure execution time
+   * @return a new committer that delegates to this instance while recording timing metrics
    */
   default StateRootCommitter timed(final OperationTimer timer) {
     final StateRootCommitter delegate = this;
