@@ -18,6 +18,16 @@ import org.hyperledger.besu.evm.worldstate.MutableWorldView;
 import org.hyperledger.besu.evm.worldstate.WorldState;
 import org.hyperledger.besu.plugin.data.BlockHeader;
 
+/**
+ * Represents a mutable view of the Ethereum world state, allowing queries and modifications to
+ * account balances, nonces, code, and storage.
+ *
+ * <p>Implementations manage the state root hash and persist changes to underlying storage through
+ * {@link org.hyperledger.besu.plugin.services.storage.StateRootCommitter}.
+ *
+ * <p>Extends both {@link org.hyperledger.besu.evm.worldstate.WorldState} and {@link
+ * org.hyperledger.besu.evm.worldstate.MutableWorldView}.
+ */
 public interface MutableWorldState extends WorldState, MutableWorldView {
 
   /**
