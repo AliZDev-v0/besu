@@ -31,6 +31,11 @@ public interface MutableWorldState extends WorldState, MutableWorldView {
    */
   void persist(BlockHeader blockHeader, StateRootCommitter committer);
 
+  /**
+   * timed
+   *
+   * @param blockHeader block header
+   */
   default void persist(final BlockHeader blockHeader) {
     persist(blockHeader, StateRootCommitter.SYNCHRONOUS);
   }

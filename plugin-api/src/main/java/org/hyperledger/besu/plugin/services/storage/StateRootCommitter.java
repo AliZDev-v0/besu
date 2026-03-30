@@ -53,8 +53,14 @@ public interface StateRootCommitter {
       WorldStateKeyValueStorage.Updater stateUpdater,
       BlockHeader blockHeader);
 
+  /** Cancel */
   default void cancel() {}
 
+  /**
+   * timed
+   *
+   * @param timer timer
+   */
   default StateRootCommitter timed(final OperationTimer timer) {
     final StateRootCommitter delegate = this;
     return new StateRootCommitter() {

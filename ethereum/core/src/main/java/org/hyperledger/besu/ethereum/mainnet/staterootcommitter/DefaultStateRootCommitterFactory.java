@@ -17,15 +17,16 @@ package org.hyperledger.besu.ethereum.mainnet.staterootcommitter;
 import org.hyperledger.besu.ethereum.ProtocolContext;
 import org.hyperledger.besu.ethereum.mainnet.block.access.list.BlockAccessList;
 import org.hyperledger.besu.plugin.data.BlockHeader;
+import org.hyperledger.besu.plugin.services.storage.StateRootCommitter;
 
 import java.util.Optional;
 
 public final class DefaultStateRootCommitterFactory implements StateRootCommitterFactory {
   @Override
-  public org.hyperledger.besu.plugin.services.storage.StateRootCommitter forBlock(
+  public StateRootCommitter forBlock(
       final ProtocolContext protocolContext,
       final BlockHeader blockHeader,
       final Optional<BlockAccessList> maybeBal) {
-    return org.hyperledger.besu.plugin.services.storage.StateRootCommitter.SYNCHRONOUS;
+    return StateRootCommitter.SYNCHRONOUS;
   }
 }

@@ -17,10 +17,11 @@ package org.hyperledger.besu.ethereum.mainnet.staterootcommitter;
 import org.hyperledger.besu.ethereum.ProtocolContext;
 import org.hyperledger.besu.ethereum.mainnet.block.access.list.BlockAccessList;
 import org.hyperledger.besu.plugin.data.BlockHeader;
+import org.hyperledger.besu.plugin.services.storage.StateRootCommitter;
 
 import java.util.Optional;
 
 public interface StateRootCommitterFactory {
-  org.hyperledger.besu.plugin.services.storage.StateRootCommitter forBlock(
+  StateRootCommitter forBlock(
       ProtocolContext protocolContext, BlockHeader blockHeader, Optional<BlockAccessList> maybeBal);
 }
