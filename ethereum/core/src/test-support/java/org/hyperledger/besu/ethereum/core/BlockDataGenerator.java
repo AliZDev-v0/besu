@@ -70,6 +70,7 @@ import org.apache.tuweni.units.bigints.UInt256;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
 
 public class BlockDataGenerator {
 
@@ -151,7 +152,7 @@ public class BlockDataGenerator {
       final List<UInt256> storageKeys) {
     final List<Block> seq = new ArrayList<>(count);
 
-    final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState =
+    final MutableWorldState worldState =
         worldStateArchive.getWorldState();
 
     long nextBlockNumber = nextBlock;
@@ -211,7 +212,7 @@ public class BlockDataGenerator {
       final List<UInt256> storageKeys) {
     final List<BlockWithAccessList> seq = new ArrayList<>(count);
 
-    final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState =
+    final MutableWorldState worldState =
         worldStateArchive.getWorldState();
 
     long nextBlockNumber = nextBlock;
@@ -291,19 +292,19 @@ public class BlockDataGenerator {
   }
 
   public List<Account> createRandomAccounts(
-      final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState,
+      final MutableWorldState worldState,
       final int count) {
     return createRandomAccounts(worldState, count, .5f, .75f);
   }
 
   public List<Account> createRandomContractAccountsWithNonEmptyStorage(
-      final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState,
+      final MutableWorldState worldState,
       final int count) {
     return createRandomAccounts(worldState, count, 1f, 1f);
   }
 
   private List<Account> createRandomAccounts(
-      final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState,
+      final MutableWorldState worldState,
       final int count,
       final float percentContractAccounts,
       final float percentContractAccountsWithNonEmptyStorage) {

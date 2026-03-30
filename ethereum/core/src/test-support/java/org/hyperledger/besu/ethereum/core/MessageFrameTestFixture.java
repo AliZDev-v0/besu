@@ -31,6 +31,7 @@ import java.util.Optional;
 
 import org.apache.tuweni.bytes.Bytes;
 import org.apache.tuweni.units.bigints.UInt256;
+import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
 
 public class MessageFrameTestFixture {
 
@@ -83,7 +84,7 @@ public class MessageFrameTestFixture {
   }
 
   public MessageFrameTestFixture worldUpdater(
-      final org.hyperledger.besu.plugin.services.storage.MutableWorldState worldState) {
+      final MutableWorldState worldState) {
     this.worldUpdater = Optional.of(worldState.updater());
     return this;
   }
