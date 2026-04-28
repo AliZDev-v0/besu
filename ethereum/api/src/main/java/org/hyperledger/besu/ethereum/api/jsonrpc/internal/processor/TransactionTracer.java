@@ -33,7 +33,7 @@ import org.hyperledger.besu.evm.tracing.OpCodeTracerConfigBuilder.OpCodeTracerCo
 import org.hyperledger.besu.evm.tracing.OperationTracer;
 import org.hyperledger.besu.evm.tracing.StreamingOperationTracer;
 import org.hyperledger.besu.evm.worldstate.WorldUpdater;
-import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
+import org.hyperledger.besu.plugin.services.worldstate.MutableWorldState;
 
 import java.io.File;
 import java.io.FileNotFoundException;

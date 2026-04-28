@@ -42,7 +42,7 @@ import org.hyperledger.besu.ethereum.trie.patricia.ParallelStoredMerklePatriciaT
 import org.hyperledger.besu.ethereum.trie.patricia.StoredMerklePatriciaTrie;
 import org.hyperledger.besu.evm.account.Account;
 import org.hyperledger.besu.evm.internal.EvmConfiguration;
-import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
+import org.hyperledger.besu.plugin.services.worldstate.MutableWorldState;
 
 import java.util.Map;
 import java.util.Objects;

@@ -26,9 +26,9 @@ import org.hyperledger.besu.ethereum.trie.pathbased.common.storage.PathBasedWorl
 import org.hyperledger.besu.ethereum.trie.pathbased.common.worldview.PathBasedWorldState;
 import org.hyperledger.besu.ethereum.trie.pathbased.common.worldview.accumulator.PathBasedWorldStateUpdateAccumulator;
 import org.hyperledger.besu.plugin.data.BlockHeader;
-import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
-import org.hyperledger.besu.plugin.services.storage.StateRootCommitter;
 import org.hyperledger.besu.plugin.services.storage.WorldStateKeyValueStorage;
+import org.hyperledger.besu.plugin.services.worldstate.MutableWorldState;
+import org.hyperledger.besu.plugin.services.worldstate.StateRootCommitter;
 
 import java.time.Duration;
 import java.util.Optional;

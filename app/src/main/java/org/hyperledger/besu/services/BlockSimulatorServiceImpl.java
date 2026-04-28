@@ -37,7 +37,7 @@ import org.hyperledger.besu.plugin.data.BlockOverrides;
 import org.hyperledger.besu.plugin.data.PluginBlockSimulationResult;
 import org.hyperledger.besu.plugin.data.TransactionSimulationResult;
 import org.hyperledger.besu.plugin.services.BlockSimulationService;
-import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
+import org.hyperledger.besu.plugin.services.worldstate.MutableWorldState;
 
 import java.util.List;
 

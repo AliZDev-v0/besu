@@ -39,8 +39,8 @@ import org.hyperledger.besu.plugin.Unstable;
 import org.hyperledger.besu.plugin.data.BlockTraceResult;
 import org.hyperledger.besu.plugin.data.TransactionTraceResult;
 import org.hyperledger.besu.plugin.services.TraceService;
-import org.hyperledger.besu.plugin.services.storage.MutableWorldState;
 import org.hyperledger.besu.plugin.services.tracer.BlockAwareOperationTracer;
+import org.hyperledger.besu.plugin.services.worldstate.MutableWorldState;
 
 import java.util.ArrayList;
 import java.util.List;

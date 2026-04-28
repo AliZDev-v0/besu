@@ -12,7 +12,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package org.hyperledger.besu.plugin.services.storage;
+package org.hyperledger.besu.plugin.services.worldstate;
 
 import org.hyperledger.besu.evm.worldstate.MutableWorldView;
 import org.hyperledger.besu.evm.worldstate.WorldState;
@@ -23,7 +23,7 @@ import org.hyperledger.besu.plugin.data.BlockHeader;
  * account balances, nonces, code, and storage.
  *
  * <p>Implementations manage the state root hash and persist changes to underlying storage through
- * {@link org.hyperledger.besu.plugin.services.storage.StateRootCommitter}.
+ * {@link StateRootCommitter}.
  *
  * <p>Extends both {@link org.hyperledger.besu.evm.worldstate.WorldState} and {@link
  * org.hyperledger.besu.evm.worldstate.MutableWorldView}.
