@@ -101,8 +101,6 @@ import org.hyperledger.besu.ethereum.trie.pathbased.common.trielog.TrieLogPruner
 import org.hyperledger.besu.ethereum.worldstate.DataStorageConfiguration;
 import org.hyperledger.besu.ethereum.worldstate.FlatDbMode;
 import org.hyperledger.besu.ethereum.worldstate.PathBasedExtraStorageConfiguration;
-import org.hyperledger.besu.ethereum.worldstate.WorldStateArchive;
-import org.hyperledger.besu.ethereum.worldstate.WorldStateArchive.WorldStateHealer;
 import org.hyperledger.besu.ethereum.worldstate.WorldStateStorageCoordinator;
 import org.hyperledger.besu.evm.internal.EvmConfiguration;
 import org.hyperledger.besu.metrics.ObservableMetricsSystem;
@@ -111,6 +109,8 @@ import org.hyperledger.besu.plugin.services.permissioning.NodeMessagePermissioni
 import org.hyperledger.besu.plugin.services.storage.DataStorageFormat;
 import org.hyperledger.besu.plugin.services.storage.WorldStateKeyValueStorage;
 import org.hyperledger.besu.plugin.services.storage.WorldStatePreimageStorage;
+import org.hyperledger.besu.plugin.services.worldstate.WorldStateArchive;
+import org.hyperledger.besu.plugin.services.worldstate.WorldStateArchive.WorldStateHealer;
 import org.hyperledger.besu.services.BesuPluginContextImpl;
 
 import java.io.Closeable;

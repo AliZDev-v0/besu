@@ -16,8 +16,8 @@ package org.hyperledger.besu.ethereum;
 
 import org.hyperledger.besu.ethereum.chain.BadBlockManager;
 import org.hyperledger.besu.ethereum.chain.MutableBlockchain;
-import org.hyperledger.besu.ethereum.worldstate.WorldStateArchive;
 import org.hyperledger.besu.plugin.ServiceManager;
+import org.hyperledger.besu.plugin.services.worldstate.WorldStateArchive;
 
 import java.util.Optional;
 
